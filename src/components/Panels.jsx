@@ -89,7 +89,7 @@ export function JournalPanel({ state }) {
   const item = JOURNAL[entry];
   return <div className="journal-layout">
     <aside className="journal-index"><span className="eyebrow">PAGES FROM AERIAL CONSERVATORY</span>{JOURNAL.map((j, i) => <button key={j.title} className={entry === i ? 'selected' : ''} onClick={() => setEntry(i)}><span>0{i + 1}</span><span>{j.title}</span><ArrowRight size={14} /></button>)}<div className="journal-tally"><span><strong>{state.bells.filter(Boolean).length}</strong> bells awakened</span><span><strong>{state.kills}</strong> creatures bested</span><span><strong>{state.tools.length}</strong> tools crafted</span></div></aside>
-    <article className="journal-page"><div className="journal-image" style={{ backgroundImage: 'url(/art/original-scene.png)' }} /><span className="eyebrow">{item.label}</span><h3>{item.title}</h3><p>{item.text}</p><blockquote><Feather size={18} weight="light" /><span>{item.note}</span></blockquote></article>
+    <article className="journal-page"><div className="journal-image" style={{ backgroundImage: 'url(./art/original-scene.png)' }} /><span className="eyebrow">{item.label}</span><h3>{item.title}</h3><p>{item.text}</p><blockquote><Feather size={18} weight="light" /><span>{item.note}</span></blockquote></article>
   </div>;
 }
 
