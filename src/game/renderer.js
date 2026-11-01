@@ -63,15 +63,30 @@ export class GameRenderer {
     this.crossfade = 1;
     this.buildScene();
     const loader = new THREE.TextureLoader();
-    this.ready = Promise.all(['grotto', 'coral', 'peak'].map(name => loader.loadAsync(`${import.meta.env.BASE_URL}art/original-scene.png?region=${name}`)))
-      .then(maps => {
-        if (this.disposed) { maps.forEach(t => t.dispose()); return; }
-        maps.forEach(t => { t.colorSpace = THREE.SRGBColorSpace; this.managedTextures.add(t); });
-        this.maps = [maps[0], maps[1], maps[2], maps[2]];
-        this.background.material.map = this.maps[0]; this.background.material.needsUpdate = true;
-        this.previousBg.material.map = this.maps[0]; this.previousBg.material.needsUpdate = true;
-        onReady();
-      }).catch(error => { if (!this.disposed) onError(error); });
+    const textureUrl = `${import.meta.env.BASE_URL}art/original-scene.png`;
+    loader.load(
+      textureUrl,
+      texture => {
+        if (this.disposed) { texture.dispose(); return; }
+        texture.colorSpace = THREE.SRGBColorSpace;
+        this.managedTextures.add(texture);
+        this.maps = [texture, texture, texture, texture];
+        if (this.background?.material) {
+          this.background.material.map = texture;
+          this.background.material.needsUpdate = true;
+        }
+        if (this.previousBg?.material) {
+          this.previousBg.material.map = texture;
+          this.previousBg.material.needsUpdate = true;
+        }
+      },
+      undefined,
+      err => {
+        console.warn('Background art could not be loaded, using procedural palette:', err);
+      }
+    );
+    this.ready = Promise.resolve();
+    setTimeout(() => onReady(), 50);
     this.observer = new ResizeObserver(() => this.resize());
     this.observer.observe(canvas.parentElement);
     this.resize();
