@@ -63,7 +63,7 @@ export class GameRenderer {
     this.crossfade = 1;
     this.buildScene();
     const loader = new THREE.TextureLoader();
-    this.ready = Promise.all(['grotto', 'coral', 'peak'].map(name => loader.loadAsync(`./art/original-scene.png?region=${name}`)))
+    this.ready = Promise.all(['grotto', 'coral', 'peak'].map(name => loader.loadAsync(`${import.meta.env.BASE_URL}art/original-scene.png?region=${name}`)))
       .then(maps => {
         if (this.disposed) { maps.forEach(t => t.dispose()); return; }
         maps.forEach(t => { t.colorSpace = THREE.SRGBColorSpace; this.managedTextures.add(t); });
